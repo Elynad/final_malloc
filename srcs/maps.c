@@ -81,3 +81,45 @@ size_t		create_new_map(size_t map_type, t_map **map)
 	(*map)->next = NULL;
 	return (_SUCCESS_);
 }
+
+/*
+**	Param : t_map *map : The link of map we are checking.
+**			size_t required : The total size we need to create a node (size and
+**				sizeof(t_block)).
+**			int size : The aligned size the user requested. Pretty useless, as
+**				we can retrieve it by a simple calcs by doing :
+**				required - sizeof(t_block)
+**	Return : Will return a pointer, NULL, or -1, given the success of this
+**		function.
+**
+**	This function check if we can set a new block inside the map given as
+**		parameter. If there is not enough room, we return NULL.
+**	We assign to block the address of the first block contained inside the map.
+**		If this block is freed and has 0 as size, that means we just created this
+**		map and block, so we set this block and return its memory pointer.
+**	If the first block is not freed or does not have 0 as size, we call find_block()
+**		and return something given its result.
+*/
+
+void		*check_in_map(t_map *map, size_t required, int size)
+{
+	void		*result;
+	t_block		*block;
+
+	if (map->remaining > required)
+	{
+		block = (void *)map + sizeof(t_map);
+		if (block->status == FREE && block->size == 0)
+		{
+			set_block(block, size);
+			map->remaining -= required;
+			return (block->memory);
+		}
+		result = find_block(block, map, required, size);
+		if ((int)result = -1)
+			return ((void *)-1);
+		else if (result != NULL)
+			return (result);
+	}
+	return (NULL);
+}
