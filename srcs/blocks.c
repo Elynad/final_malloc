@@ -64,7 +64,7 @@ t_block		*set_block(t_block *block, size_t size)
 {
 	block->size = size;
 	block->next = NULL;
-	block->status = USED;
+	block->is_free = USED;
 	block->memory = (void *)block + sizeof(t_block);
 	return (block);
 }
@@ -88,10 +88,10 @@ void		*find_block(t_block *block, t_map *map, size_t required, size_t size)
 {
 	while (block)
 	{
-		if (block->status == FREED && block->size >= size)
+		if (block->is_free == FREE && block->size >= size)
 		{
-			block->size == size;
-			block->status = USED;
+			block->size = size;
+			block->is_free = USED;
 			map->remaining -= required;
 			if (block->next)
 				keep_memory_optimized(block);
@@ -102,7 +102,7 @@ void		*find_block(t_block *block, t_map *map, size_t required, size_t size)
 		if (block->next == NULL)
 		{
 			map->remaining -= required;
-			block->next = block->ptr + block->size;
+			block->next = block->memory + block->size;
 			block = block->next;
 			set_block(block, size);
 			return (block->memory);
@@ -139,6 +139,6 @@ void		keep_memory_optimized(t_block *block)
 		set_block(new_block, free_size);
 		new_block->next = block->next;
 		block->next = new_block;
-		new_block->status = FREE;
+		new_block->is_free = FREE;
 	}
 }

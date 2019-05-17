@@ -36,9 +36,9 @@ void		*malloc(size_t size)
 {
 	void	*result;
 
-	result = align_size(size);
+	size = align_size(size);
 	pthread_mutex_lock(&g_thread_locker);
-	result = get_right_map(size);
+	result = get_from_right_map(size);
 	pthread_mutex_unlock(&g_thread_locker);
 	return (result);
 }

@@ -23,14 +23,14 @@
 
 void		free(void *ptr)
 {
-	pthread_mutex_lock(&g_locker);
+	pthread_mutex_lock(&g_thread_locker);
 	if (ptr == NULL)
 		return ;
-	if (find_memory_in_map(ptr, g_global.tiny) == SUCCESS)
+	if (find_memory_in_map(ptr, g_global.tiny) == _SUCCESS_)
 		return ;
-	if (find_memory_in_map(ptr, g_global.small) == SUCCESS)
+	if (find_memory_in_map(ptr, g_global.small) == _SUCCESS_)
 		return ;
-	if (find_memory_in_map(ptr, g_global.large) == SUCCESS)
+	if (find_memory_in_map(ptr, g_global.large) == _SUCCESS_)
 		return ;
-	pthread_mutex_unlock(&g_locker);
+	pthread_mutex_unlock(&g_thread_locker);
 }

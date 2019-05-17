@@ -1,5 +1,5 @@
 /* ************************************************************************** */
-/*                                                                            */
+	/*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   libft_malloc.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
@@ -54,16 +54,22 @@ typedef struct		s_global
 */
 
 # define TINY_MAX 1024
-# define SMALL_MAX (TINY_SIZE * 32)
+# define SMALL_MAX (TINY_MAX * 32)
 
 # define PAGE_SIZE (size_t)getpagesize()
 # define MAP_ALIGN(SIZE) (((SIZE - 1) + PAGE_SIZE) - ((SIZE - 1) % PAGE_SIZE))
+
+# define MAP_HEADER sizeof(t_map)
+# define BLOCK_HEADER sizeof(t_block)
 
 # define TINY_MMAP_SIZE (MAP_HEADER + ((BLOCK_HEADER + TINY_MAX) * 100))
 # define SMALL_MMAP_SIZE (MAP_HEADER + ((BLOCK_HEADER + SMALL_MAX) * 100))
 
 # define PROT PROT_WRITE|PROT_READ
 # define MAP MAP_ANONYMOUS|MAP_PRIVATE
+
+# define FREE 'y'
+# define USED 'n'
 
 /*
 **	RETURN DEFINES
@@ -101,7 +107,7 @@ void				*check_in_map(t_map *map, size_t required, int size);
 
 void				*get_free_memory(size_t map_type, t_map *map, size_t size);
 t_block				*set_block(t_block *block, size_t size);
-void				*find_block(t_block *block, t_map, *map, size_t required, size_t size);
+void				*find_block(t_block *block, t_map *map, size_t required, size_t size);
 void				keep_memory_optimized(t_block *block);
 
 /*
@@ -111,6 +117,8 @@ void				keep_memory_optimized(t_block *block);
 size_t				align_size(size_t size);
 int					is_block_in_map(t_block *block, t_map *map);
 int					is_pointer_valid(void *ptr, t_map *map);
+void				*ft_memmove(void *dest, const void *src, size_t len);
+void				*ft_memcpy(void *dest, const void *src, size_t len);
 
 /*
 **	============================================================================
@@ -131,5 +139,16 @@ void				merge_freed_blocks(t_map *map);
 */
 
 void				*realloc(void *ptr, size_t size);
+
+void				*realloc_helper(void *ptr, t_map *map, size_t size);
+void				*create_new_pointer(t_block *block, void *ptr, size_t size);
+
+/*
+**	============================================================================
+**	|								  REALLOCF								   |
+**	============================================================================
+*/
+
+void				*reallocf(void *ptr, size_t size);
 
 #endif

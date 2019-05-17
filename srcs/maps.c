@@ -28,23 +28,23 @@ void		*get_from_right_map(size_t requested)
 	void	*result;
 
 	result = NULL;
-	if (size <= TINY_MAX)
+	if (requested <= TINY_MAX)
 	{
 		if (!g_global.tiny && !create_new_map(TINY_MAX, &g_global.tiny))
 			return (NULL);
-		ptr = get_free_memory(TINY_MAX, g_global.tiny, size);
+		result = get_free_memory(TINY_MAX, g_global.tiny, requested);
 	}
-	else if (size <= SMALL_MAX)
+	else if (requested <= SMALL_MAX)
 	{
 		if (!g_global.small && !create_new_map(SMALL_MAX, &g_global.small))
 			return (NULL);
-		ptr = get_free_memory(SMALL_MAX, g_global.small, size);
+		result = get_free_memory(SMALL_MAX, g_global.small, requested);
 	}
 	else
 	{
-		if (!g_global.large && !create_new_map(size, &g_global.large))
+		if (!g_global.large && !create_new_map(requested, &g_global.large))
 			return (NULL);
-		ptr = get_free_memory(size, g_global.large, size);
+		result = get_free_memory(requested, g_global.large, requested);
 	}
 	return (result);
 }
@@ -74,7 +74,7 @@ size_t		create_new_map(size_t map_type, t_map **map)
 		mmap_size = MAP_ALIGN(mmap_size);
 	}
 	*map = mmap(NULL, mmap_size, PROT, MAP, -1, 0);
-	if (*map = MAP_FAILED)
+	if (*map == MAP_FAILED)
 		return (_ERROR_);
 	(*map)->size = mmap_size;
 	(*map)->remaining = mmap_size - sizeof(t_map);
@@ -109,14 +109,14 @@ void		*check_in_map(t_map *map, size_t required, int size)
 	if (map->remaining > required)
 	{
 		block = (void *)map + sizeof(t_map);
-		if (block->status == FREE && block->size == 0)
+		if (block->is_free == FREE && block->size == 0)
 		{
 			set_block(block, size);
 			map->remaining -= required;
 			return (block->memory);
 		}
 		result = find_block(block, map, required, size);
-		if ((int)result = -1)
+		if ((int)result == -1)
 			return ((void *)-1);
 		else if (result != NULL)
 			return (result);

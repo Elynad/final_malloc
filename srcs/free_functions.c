@@ -36,7 +36,7 @@ int			find_memory_in_map(void *ptr, t_map *map)
 		{
 			ptr = ptr - sizeof(t_block);
 			block = (t_block *)ptr;
-			block->status = FREE;
+			block->is_free = FREE;
 			map->remaining += sizeof(t_block) + block->size;
 			if (!check_is_unmap_required(map, previous))
 				merge_freed_blocks(map);
@@ -66,7 +66,7 @@ int			check_is_unmap_required(t_map *map, t_map *prev)
 	block = (void *)map + sizeof(t_map);
 	while (block)
 	{
-		if (block->status == USED)
+		if (block->is_free == USED)
 			return (_ERROR_);
 		block = block->next;
 	}
@@ -98,7 +98,7 @@ void		merge_freed_blocks(t_map *map)
 	block = (void *)map + sizeof(t_map);
 	while (block->next)
 	{
-		if (block->status == FREE && block->next->status == FREE)
+		if (block->is_free == FREE && block->next->is_free == FREE)
 		{
 			block->size += block->next->size + sizeof(t_block);
 			block->next = block->next->next;

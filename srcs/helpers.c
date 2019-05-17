@@ -70,3 +70,37 @@ int			is_pointer_valid(void *ptr, t_map *map)
 	}
 	return (_ERROR_);
 }
+
+void		*ft_memmove(void *dest, const void *src, size_t len)
+{
+	char	*d;
+	char	*s;
+
+	if (dest == src && !len)
+		return (NULL);
+	d = (char *)dest;
+	s = (char *)src;
+	if (d > s)
+	{
+		while (len--)
+			d[len] = s[len];
+	}
+	else
+		dest = ft_memcpy(dest, (void *)src, len);
+	return (dest);
+}
+
+void		*ft_memcpy(void *dest, const void *src, size_t n)
+{
+	char	*s;
+	char	*d;
+
+	s = (char *)src;
+	d = (char *)dest;
+	if (n == 0 || d == s)
+		return ((void *)d);
+	while (--n)
+		*d++ = *s++;
+	*d = *s;
+	return (dest);
+}
