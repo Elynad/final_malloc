@@ -6,7 +6,7 @@
 /*   By: mameyer <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/17 18:19:43 by mameyer           #+#    #+#             */
-/*   Updated: 2019/05/17 18:19:51 by mameyer          ###   ########.fr       */
+/*   Updated: 2019/05/17 20:01:03 by mameyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,15 @@ void		*realloc_helper(void *ptr, t_map *map, size_t size)
 }
 
 /*
-**	Param : t_block *block : The original block of the memory we want to realloc.
+**	Param : t_block *block : The original block of the memory we want to
+**		realloc.
 **			void *ptr : The pointer on the memory we want to realloc.
 **			size_t size : The size of the new allocation.
 **	Return : The newly allocated memory pointer.
 **
 **	Call malloc with the new size to create a new block of memory, then call
-**		to ft_memmove() to copy the data from the old pointer to the new one. Then,
-**		free the old pointer and returns the new one.
+**		to ft_memmove() to copy the data from the old pointer to the new one.
+**		Then, free the old pointer and returns the new one.
 */
 
 void		*create_new_pointer(t_block *block, void *ptr, size_t size)

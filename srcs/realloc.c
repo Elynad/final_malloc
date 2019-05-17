@@ -6,7 +6,7 @@
 /*   By: mameyer <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/17 18:17:18 by mameyer           #+#    #+#             */
-/*   Updated: 2019/05/17 18:17:20 by mameyer          ###   ########.fr       */
+/*   Updated: 2019/05/17 19:59:34 by mameyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void		*realloc(void *ptr, size_t size)
 		return (result);
 	if (!size)
 	{
-		free (ptr);
+		free(ptr);
 		return (malloc(size));
 	}
 	pthread_mutex_unlock(&g_thread_locker);

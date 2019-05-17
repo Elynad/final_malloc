@@ -1,12 +1,12 @@
 /* ************************************************************************** */
-	/*                                                                            */
+/*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   libft_malloc.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mameyer <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/17 15:20:07 by mameyer           #+#    #+#             */
-/*   Updated: 2019/05/17 15:20:09 by mameyer          ###   ########.fr       */
+/*   Updated: 2019/05/17 19:55:14 by mameyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,49 @@
 # include <sys/resource.h>
 # include <unistd.h>
 # include <pthread.h>
+
+/*
+**	RETURN DEFINES
+*/
+
+# ifndef RETURN_STAT
+#  define RETURN_STAT
+
+#  define _FAULT_		0x00
+#  define _ERROR_		0x00
+#  define _SUCCESS_		0x01
+
+# endif
+
+/*
+** DEFINES
+*/
+
+# define PAGE_SIZE (size_t)getpagesize()
+
+# define MAP_ALIGN(SIZE) (((SIZE - 1) + PAGE_SIZE) - ((SIZE - 1) % PAGE_SIZE))
+
+# define MAP_HEADER sizeof(t_map)
+# define BLOCK_HEADER sizeof(t_block)
+
+# define TINY_MAX 1024
+# define SMALL_MAX (TINY_MAX * 32)
+
+# define TINY_MMAP_SIZE (MAP_HEADER + ((BLOCK_HEADER + TINY_MAX) * 100))
+# define SMALL_MMAP_SIZE (MAP_HEADER + ((BLOCK_HEADER + SMALL_MAX) * 100))
+
+# define PROT PROT_WRITE|PROT_READ
+# define MAP MAP_ANONYMOUS|MAP_PRIVATE
+
+# define USED 1
+# define FREE 0
+
+/*
+**	GLOBAL
+*/
+
+extern struct s_global		g_global;
+extern pthread_mutex_t		g_thread_locker;
 
 /*
 **	STRUCTS
@@ -50,42 +93,6 @@ typedef struct		s_global
 }					t_global;
 
 /*
-** DEFINES
-*/
-
-# define TINY_MAX 1024
-# define SMALL_MAX (TINY_MAX * 32)
-
-# define PAGE_SIZE (size_t)getpagesize()
-# define MAP_ALIGN(SIZE) (((SIZE - 1) + PAGE_SIZE) - ((SIZE - 1) % PAGE_SIZE))
-
-# define MAP_HEADER sizeof(t_map)
-# define BLOCK_HEADER sizeof(t_block)
-
-# define TINY_MMAP_SIZE (MAP_HEADER + ((BLOCK_HEADER + TINY_MAX) * 100))
-# define SMALL_MMAP_SIZE (MAP_HEADER + ((BLOCK_HEADER + SMALL_MAX) * 100))
-
-# define PROT PROT_WRITE|PROT_READ
-# define MAP MAP_ANONYMOUS|MAP_PRIVATE
-
-# define FREE 'y'
-# define USED 'n'
-
-/*
-**	RETURN DEFINES
-*/
-
-# define _SUCCESS_ 0x01
-# define _ERROR_ 0x00
-
-/*
-**	GLOBAL
-*/
-
-extern struct s_global 		g_global;
-extern pthread_mutex_t		g_thread_locker;
-
-/*
 **	============================================================================
 **	|									MALLOC								   |
 **	============================================================================
@@ -107,7 +114,8 @@ void				*check_in_map(t_map *map, size_t required, int size);
 
 void				*get_free_memory(size_t map_type, t_map *map, size_t size);
 t_block				*set_block(t_block *block, size_t size);
-void				*find_block(t_block *block, t_map *map, size_t required, size_t size);
+void				*find_block(t_block *block, t_map *map, size_t required,
+						size_t size);
 void				keep_memory_optimized(t_block *block);
 
 /*

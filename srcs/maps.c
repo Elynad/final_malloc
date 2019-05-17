@@ -6,7 +6,7 @@
 /*   By: mameyer <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/17 15:45:37 by mameyer           #+#    #+#             */
-/*   Updated: 2019/05/17 15:45:38 by mameyer          ###   ########.fr       */
+/*   Updated: 2019/05/17 19:58:57 by mameyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,10 @@ size_t		create_new_map(size_t map_type, t_map **map)
 **	This function check if we can set a new block inside the map given as
 **		parameter. If there is not enough room, we return NULL.
 **	We assign to block the address of the first block contained inside the map.
-**		If this block is freed and has 0 as size, that means we just created this
-**		map and block, so we set this block and return its memory pointer.
-**	If the first block is not freed or does not have 0 as size, we call find_block()
-**		and return something given its result.
+**		If this block is freed and has 0 as size, that means we just created
+**		this map and block, so we set this block and return its memory pointer.
+**	If the first block is not freed or does not have 0 as size, we call
+**		find_block() and return something given its result.
 */
 
 void		*check_in_map(t_map *map, size_t required, int size)
@@ -117,7 +117,7 @@ void		*check_in_map(t_map *map, size_t required, int size)
 		}
 		result = find_block(block, map, required, size);
 		if ((int)result == -1)
-			return ((void *)-1);
+			return (void *)-1;
 		else if (result != NULL)
 			return (result);
 	}

@@ -6,7 +6,7 @@
 /*   By: mameyer <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/17 15:36:07 by mameyer           #+#    #+#             */
-/*   Updated: 2019/05/17 15:36:08 by mameyer          ###   ########.fr       */
+/*   Updated: 2019/05/17 19:55:37 by mameyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,7 @@ int			is_block_in_map(t_block *block, t_map *map)
 	if ((void *)block > (void *)map
 		&& (unsigned int)block < (unsigned int)map + map->size)
 		return (_SUCCESS_);
-	else
-		return (_ERROR_);
+	return (_ERROR_);
 }
 
 /*
@@ -71,14 +70,14 @@ int			is_pointer_valid(void *ptr, t_map *map)
 	return (_ERROR_);
 }
 
-void		*ft_memmove(void *dest, const void *src, size_t len)
+void		*ft_memmove(void *dst, const void *src, size_t len)
 {
 	char	*d;
 	char	*s;
 
-	if (dest == src && !len)
+	if (dst == src && !len)
 		return (NULL);
-	d = (char *)dest;
+	d = (char *)dst;
 	s = (char *)src;
 	if (d > s)
 	{
@@ -86,21 +85,21 @@ void		*ft_memmove(void *dest, const void *src, size_t len)
 			d[len] = s[len];
 	}
 	else
-		dest = ft_memcpy(dest, (void *)src, len);
-	return (dest);
+		dst = ft_memcpy(dst, (void *)src, len);
+	return (dst);
 }
 
-void		*ft_memcpy(void *dest, const void *src, size_t n)
+void		*ft_memcpy(void *dst, const void *src, size_t n)
 {
 	char	*s;
 	char	*d;
 
 	s = (char *)src;
-	d = (char *)dest;
+	d = (char *)dst;
 	if (n == 0 || d == s)
 		return ((void *)d);
 	while (--n)
 		*d++ = *s++;
 	*d = *s;
-	return (dest);
+	return (dst);
 }

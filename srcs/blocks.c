@@ -6,7 +6,7 @@
 /*   By: mameyer <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/17 16:22:32 by mameyer           #+#    #+#             */
-/*   Updated: 2019/05/17 16:22:33 by mameyer          ###   ########.fr       */
+/*   Updated: 2019/05/17 19:56:53 by mameyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,14 @@ t_block		*set_block(t_block *block, size_t size)
 **	Return : Return a pointer to the memory of the block in case of success,
 **		or NULL / -1 in case of failure.
 **
-**	Loops through the block to find a block with enough room. If we found a block
-**		which is freed and with enough size for our needs, we return it.
+**	Loops through the block to find a block with enough room. If we found a
+**		block which is freed and with enough size for our needs, we return it.
 **	If there is no block->next, we init this block and the next block, by using
 **		set_block, and return its memory.
 */
 
-void		*find_block(t_block *block, t_map *map, size_t required, size_t size)
+void		*find_block(t_block *block, t_map *map, size_t required,
+				size_t size)
 {
 	while (block)
 	{
@@ -115,11 +116,11 @@ void		*find_block(t_block *block, t_map *map, size_t required, size_t size)
 /*
 **	Param : t_block *block : The block we need to check for optimization.
 **
-**	This function is only used when we found a block with enough size, and there is a
-**		block next to it. We calc the total space, given the gap between our block and
-**		its next block.
-**	Given this gap, if there is enough room to fit another block with 4 bytes, we align
-**		this block and insert it between block and block->next.
+**	This function is only used when we found a block with enough size, and there
+**		is a block next to it. We calc the total space, given the gap between
+**		our block and its next block.
+**	Given this gap, if there is enough room to fit another block with 4 bytes,
+**		we align this block and insert it between block and block->next.
 */
 
 void		keep_memory_optimized(t_block *block)
@@ -134,7 +135,8 @@ void		keep_memory_optimized(t_block *block)
 		new_block = (t_block *)((void *)block->memory + block->size);
 		free_size = total_room - sizeof(t_block) - block->size - 1;
 		free_size = align_size(free_size);
-		if ((void *)new_block + sizeof(t_block) + free_size > (void *)block->next)
+		if ((void *)new_block + sizeof(t_block)
+				+ free_size > (void *)block->next)
 			free_size -= 4;
 		set_block(new_block, free_size);
 		new_block->next = block->next;

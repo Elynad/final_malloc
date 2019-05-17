@@ -6,7 +6,7 @@
 /*   By: mameyer <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/17 17:46:59 by mameyer           #+#    #+#             */
-/*   Updated: 2019/05/17 17:47:00 by mameyer          ###   ########.fr       */
+/*   Updated: 2019/05/17 19:58:09 by mameyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int			check_is_unmap_required(t_map *map, t_map *prev)
 }
 
 /*
-**	Params : t_map *map : 
+**	Params : t_map *map : The map we need to check for adjacents freed blocks.
 **
 **	Called when check_if_unmap_required() fails.
 **	Loops through the blocks contained in map, and check if this block is
